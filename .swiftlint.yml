@@ -1,0 +1,26 @@
+#
+//  .swiftlint.yml
+//  
+//
+//  Created by Devin De Silva on 05/11/2025.
+//
+
+disabled_rules:
+  - line_length
+  - trailing_whitespace
+  - identifier_name # relax early, tighten later
+
+opt_in_rules:
+  - empty_count
+  - closure_end_indentation
+  - explicit_init
+  - fatal_error_message
+
+included:
+  - LOKEY
+
+excluded:
+  - DerivedData
+  - Tests/Snapshots
+
+reporter: "xcode"

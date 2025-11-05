@@ -1,0 +1,7 @@
+--indent 4
+--maxwidth 140
+--disable wrapArguments
+--self insert
+--stripunusedargs closure-only
+--swiftversion 5.9
+
