@@ -62,7 +62,8 @@ Add after MVP
 -Detail + Copy
 
 ## 🏷️ License
-MIT — see [LICENSE](LICENSE).
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+ see [LICENSE](LICENSE).
 
 ## 🙌 Credits
 
