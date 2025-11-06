@@ -62,8 +62,7 @@ Add after MVP
 -Detail + Copy
 
 ## 🏷️ License
-MIT — see LICENSE
-.
+MIT — see [LICENSE](LICENSE).
 
 ## 🙌 Credits
 
