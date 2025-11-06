@@ -31,6 +31,7 @@ No accounts. No cloud. Your secrets, safely stored on device.
 > *Future (not in MVP):* password generator, export/import (encrypted), iCloud sync, breach checks.
 
 ## 🗂 Project Structure
+```bash
 LOKEY/
 ├─ App/ # app entry & scene handling
 ├─ Models/ # Credential, etc.
@@ -39,6 +40,7 @@ LOKEY/
 ├─ Services/ # AuthService, KeychainService, Clipboard
 ├─ Utils/ # helpers
 └─ Tests/ # unit tests
+```
 
 
 ## 🚀 Getting Started
@@ -47,10 +49,11 @@ LOKEY/
 3. Build & run
 
 ## 🧪 Testing
-```bash
+```bash 
 xcodebuild -scheme LOKEY -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 15' test
+```
 
-📸 Screenshots
+## 📸 Screenshots
 
 Add after MVP
 -Lock screen
@@ -58,10 +61,10 @@ Add after MVP
 -Add/Edit form
 -Detail + Copy
 
-🏷️ License
+## 🏷️ License
 MIT — see LICENSE
 .
 
-🙌 Credits
+## 🙌 Credits
 
 By Devin De Silva. “LOKEY” (Low-key & Lock+Key) — keep it LOKEY.
