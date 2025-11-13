@@ -1,0 +1,99 @@
+//
+//  VaultListView.swift
+//  LOKEY
+//
+//  Created by Devin De Silva on 06/11/2025.
+//
+
+import SwiftUI
+import UIKit
+
+struct VaultListView: View {
+    @StateObject private var store = VaultStore()
+    @State private var showAdd = false
+    @State private var query = ""
+    var onLock: () -> Void
+
+    private var filtered: [Credential] {
+        guard !query.isEmpty else { return store.items }
+        return store.items.filter {
+            $0.title.localizedCaseInsensitiveContains(query) ||
+            $0.username.localizedCaseInsensitiveContains(query)
+        }
+    }
+
+    var body: some View {
+        NavigationStack {
+            Group {
+                if filtered.isEmpty {
+                    ContentUnavailableView(
+                        "No credentials",
+                        systemImage: "key.fill",
+                        description: Text("Tap + to add your first item.")
+                    )
+                } else {
+                    List {
+                        ForEach(filtered) { c in
+                            NavigationLink {
+                                AddEditCredentialView(mode: .edit(c)) { updated in
+                                    store.update(updated)
+                                    // Optional: success haptic for edit save as well
+                                    UINotificationFeedbackGenerator().notificationOccurred(.success)
+                                }
+                            } label: {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(c.title).font(.headline)
+                                    Text(c.username).foregroundStyle(.secondary)
+                                    Text(c.updatedAt.formatted(date: .abbreviated, time: .shortened))
+                                        .font(.caption2)
+                                        .foregroundStyle(.tertiary)
+                                }
+                            }
+                            .contextMenu {
+                                Button {
+                                    Clipboard.copySecure(c.username)
+                                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                                } label: {
+                                    Label("Copy username", systemImage: "doc.on.doc")
+                                }
+                            }
+                        }
+                        .onDelete { offsets in
+                            // Haptic for delete gesture
+                            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                            store.delete(at: offsets)
+                            // Optional: success confirmation after delete
+                            UINotificationFeedbackGenerator().notificationOccurred(.success)
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Vault")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button { onLock() } label: { Image(systemName: "lock.fill") }
+                        .accessibilityLabel("Lock app")
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        // Haptic on tapping Add
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                        showAdd = true
+                    } label: { Image(systemName: "plus") }
+                        .accessibilityLabel("Add credential")
+                }
+            }
+            .searchable(text: $query)
+            .sheet(isPresented: $showAdd) {
+                NavigationStack {
+                    AddEditCredentialView(mode: .add) { newItem in
+                        store.add(newItem)
+                        // Success haptic after add completes
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    }
+                }
+            }
+        }
+    }
+}
+
