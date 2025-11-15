@@ -35,16 +35,24 @@ struct VaultListView: View {
                     List {
                         ForEach(filtered) { c in
                             NavigationLink {
-                                AddEditCredentialView(mode: .edit(c)) { updated in
-                                    store.update(updated)
-                                    // Optional: success haptic for edit save as well
-                                    UINotificationFeedbackGenerator().notificationOccurred(.success)
-                                }
+                                CredentialDetailView(
+                                    credential: c,
+                                    onUpdate: { updated in
+                                        store.update(updated)
+                                        
+                                    },
+                                    onDelete: {
+                                        // Find the index in the store and delete that item
+                                        if let index = store.items.firstIndex(where: {$0.id == c.id}) {
+                                            store.delete(at: IndexSet(integer: index))
+                                        }
+                                    }
+                                )
                             } label: {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(c.title).font(.headline)
                                     Text(c.username).foregroundStyle(.secondary)
-                                    Text(c.updatedAt.formatted(date: .abbreviated, time: .shortened))
+                                    Text("Updated \(c.updatedAt.formatted(date: .abbreviated, time: .shortened))")
                                         .font(.caption2)
                                         .foregroundStyle(.tertiary)
                                 }
@@ -54,8 +62,15 @@ struct VaultListView: View {
                                     Clipboard.copySecure(c.username)
                                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
                                 } label: {
-                                    Label("Copy username", systemImage: "doc.on.doc")
+                                    Label("Copy Username", systemImage: "doc.on.doc")
                                 }
+                                Button {
+                                    Clipboard.copySecure(c.password)
+                                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                                } label: {
+                                    Label("Copy Password", systemImage: "doc.on.doc")
+                                }
+                                
                             }
                         }
                         .onDelete { offsets in
