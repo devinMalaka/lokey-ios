@@ -38,7 +38,7 @@ struct LockedView: View {
             Text("LOKEY")
                 .font(.largeTitle).bold()
             
-            Text("Yor Secrets, safely stored")
+            Text("Yor secrets, safely stored")
                 .foregroundStyle(.secondary)
             
             Button {
@@ -86,10 +86,10 @@ struct LockedView: View {
         guard !isAuthenticating else { return }
         isAuthenticating = true; defer { isAuthenticating = false }
         
-        let ok = await AuthService().authenticate(reason: "Unlock Your Vault")
+        let ok = await AuthService().authenticate(reason: "Unlock your vault")
         if ok {
             // Subtle haptic on successful unlock
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            Haptics.impact(.light)
             onUnlock()
         } else {
             errorMessage = "Failed to unlock. Please try again."

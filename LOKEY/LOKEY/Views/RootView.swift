@@ -11,12 +11,23 @@ struct RootView: View {
     
     @Binding var isLocked: Bool
     
+    @AppStorage(UserDefaultsKey.requireBiometricsOnLaunch)
+    private var requireBiometricsOnLaunch: Bool = true
+    
     var body: some View {
         Group {
-            if isLocked {
+            if isLocked && requireBiometricsOnLaunch {
                 LockedView(onUnlock: { isLocked = false })
             } else {
-                VaultListView(onLock: { isLocked = true })
+                VaultListView(onLock: {
+                    // If biometrics are disabled, lockingjust shows vault again
+                    if requireBiometricsOnLaunch {
+                        isLocked = true
+                    } else {
+                        isLocked = false
+                    }
+                    
+                })
             }
         }
     }

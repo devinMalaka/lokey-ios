@@ -11,7 +11,12 @@ import UIKit
 struct VaultListView: View {
     @StateObject private var store = VaultStore()
     @State private var showAdd = false
+    @State private var showSettings = false
     @State private var query = ""
+    
+    @AppStorage(UserDefaultsKey.requireBiometricsOnLaunch)
+    private var requireBiometricsOnLaunch: Bool = false
+    
     var onLock: () -> Void
 
     private var filtered: [Credential] {
@@ -60,13 +65,13 @@ struct VaultListView: View {
                             .contextMenu {
                                 Button {
                                     Clipboard.copySecure(c.username)
-                                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                                    Haptics.impact(.light)
                                 } label: {
                                     Label("Copy Username", systemImage: "doc.on.doc")
                                 }
                                 Button {
                                     Clipboard.copySecure(c.password)
-                                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                                    Haptics.impact(.light)
                                 } label: {
                                     Label("Copy Password", systemImage: "doc.on.doc")
                                 }
@@ -75,7 +80,7 @@ struct VaultListView: View {
                         }
                         .onDelete { offsets in
                             // Haptic for delete gesture
-                            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                            Haptics.impact(.light)
                             store.delete(at: offsets)
                             // Optional: success confirmation after delete
                             UINotificationFeedbackGenerator().notificationOccurred(.success)
@@ -85,14 +90,22 @@ struct VaultListView: View {
             }
             .navigationTitle("Vault")
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button { onLock() } label: { Image(systemName: "lock.fill") }
-                        .accessibilityLabel("Lock app")
+                // Left:  Lock + Settings menu
+                ToolbarItemGroup(placement: .topBarLeading) {
+                    if requireBiometricsOnLaunch {
+                        Button { onLock() } label: { Image(systemName: "lock") }
+                            .accessibilityLabel("Lock app")
+                    }
+                    
+                    Button { showSettings = true } label: { Image(systemName: "gearshape") }
+                        .accessibilityLabel("Open settings")
                 }
+                
+                // Right: Add credentials option
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         // Haptic on tapping Add
-                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                        Haptics.impact(.light)
                         showAdd = true
                     } label: { Image(systemName: "plus") }
                         .accessibilityLabel("Add credential")
@@ -107,6 +120,9 @@ struct VaultListView: View {
                         UINotificationFeedbackGenerator().notificationOccurred(.success)
                     }
                 }
+            }
+            .sheet(isPresented: $showSettings) {
+                SettingsView()
             }
         }
     }

@@ -58,7 +58,7 @@ struct CredentialDetailView: View {
                     
                     Button {
                         Clipboard.copySecure(credential.username)
-                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                        Haptics.impact(.light)
                     } label: {
                         Image(systemName: "doc.on.doc")
                     }
@@ -82,7 +82,7 @@ struct CredentialDetailView: View {
                     
                     Button {
                         isPasswordVisible.toggle()
-                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                        Haptics.impact(.light)
                     } label: {
                         Image(systemName: isPasswordVisible ? "eye.slash.fill" : "eye.fill")
                     }
@@ -91,7 +91,7 @@ struct CredentialDetailView: View {
                     
                     Button {
                         Clipboard.copySecure(credential.password)
-                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                        Haptics.impact(.light)
                     } label: {
                         Image(systemName: "doc.on.doc")
                     }
