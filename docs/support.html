@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LOKEY Password Vault – Support &amp; Product Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #050608;
+      --card: #0f1013;
+      --card-soft: #14151a;
+      --accent: #ffffff;
+      --accent-soft: rgba(255,255,255,0.06);
+      --muted: rgba(255,255,255,0.55);
+      --border-subtle: rgba(255,255,255,0.08);
+      --radius-xl: 26px;
+      --shadow-soft: 0 26px 60px rgba(0,0,0,0.7);
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                   sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: radial-gradient(circle at top left, #181921 0, #050608 55%);
+      color: var(--accent);
+      -webkit-font-smoothing: antialiased;
+      padding: 32px 20px 64px;
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .brand-text-main {
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+
+    .brand-text-sub {
+      font-size: 11px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .pill {
+      border-radius: 999px;
+      padding: 6px 12px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(5,6,8,0.7);
+      color: var(--muted);
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #4ade80;
+      box-shadow: 0 0 0 4px rgba(74,222,128,0.15);
+    }
+
+    .hero {
+      border-radius: var(--radius-xl);
+      padding: 32px 26px 26px;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.06), transparent 40%),
+        linear-gradient(160deg, #12131a, #050608 60%);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.0fr);
+      gap: 24px;
+      margin-bottom: 32px;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      body { padding: 20px 16px 40px; }
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 24px 20px 20px;
+      }
+      .hero-logo-wrap {
+        justify-content: flex-start;
+      }
+    }
+
+    .hero-title {
+      font-size: clamp(24px, 3.1vw, 32px);
+      line-height: 1.12;
+      margin-bottom: 12px;
+    }
+
+    .hero-title span {
+      display: block;
+    }
+
+    .hero-title span.lo {
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .hero-title span.key {
+      font-weight: 800;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      font-size: clamp(28px, 4vw, 36px);
+    }
+
+    .hero-sub {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 32rem;
+      margin-bottom: 20px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .badge {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(8,8,11,0.7);
+      color: var(--muted);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .cta-primary,
+    .cta-secondary {
+      font-size: 13px;
+      padding: 9px 18px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      cursor: default;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cta-primary {
+      background: #ffffff;
+      color: #050608;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+      font-weight: 600;
+    }
+
+    .cta-secondary {
+      border-color: var(--border-subtle);
+      color: var(--muted);
+      background: rgba(8,8,11,0.7);
+    }
+
+    .hero-logo-wrap {
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero-logo {
+      max-width: 220px;
+      width: 100%;
+      border-radius: 24px;
+      background: #ffffff;
+      padding: 16px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.75);
+    }
+
+    .hero-logo img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    main {
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      main { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    .card {
+      border-radius: 24px;
+      padding: 20px 18px 18px;
+      background: var(--card);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.75);
+    }
+
+    .card h2 {
+      font-size: 16px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+    }
+
+    .card h3 {
+      font-size: 17px;
+      margin-bottom: 10px;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin-top: 8px;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .feature-dot {
+      width: 6px;
+      height: 6px;
+      flex-shrink: 0;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.55);
+      margin-top: 4px;
+    }
+
+    .card-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .support-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 10px;
+      font-size: 13px;
+    }
+
+    .support-label {
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .support-value a {
+      color: #ffffff;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.3);
+      padding-bottom: 1px;
+    }
+
+    .support-value a:hover {
+      border-bottom-color: #ffffff;
+    }
+
+    .faq-item {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .faq-q {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .faq-a {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 32px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding-bottom: 1px;
+    }
+
+    footer a:hover {
+      color: #ffffff;
+      border-bottom-color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand-lockup">
+        <div class="brand-logo">
+          <!-- Place lokey-logo.png in same folder as this HTML -->
+          <img src="lokey-logo.png" alt="LOKEY Password Vault logo" />
+        </div>
+        <div>
+          <div class="brand-text-main">LOKEY</div>
+          <div class="brand-text-sub">Password&nbsp;Vault</div>
+        </div>
+      </div>
+      <div class="pill">
+        <span class="pill-dot"></span>
+        <span>Secure by design</span>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h1 class="hero-title">
+          <span class="lo">LOKEY</span>
+          <span class="key">Password Vault</span>
+        </h1>
+        <p class="hero-sub">
+          A privacy-first, Face ID–locked vault for the accounts you actually use every day. 
+          All your logins live locally on your iPhone – encrypted, organized, and under your control.
+        </p>
+
+        <div class="badge-row">
+          <div class="badge">Face ID &amp; Touch ID lock</div>
+          <div class="badge">On-device keychain storage</div>
+          <div class="badge">No accounts. No cloud.</div>
+        </div>
+
+        <div class="cta-row">
+          <div class="cta-primary">
+            <span>Get LOKEY on the App Store</span>
+          </div>
+          <div class="cta-secondary">
+            <span>Contact support</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-logo-wrap">
+        <div class="hero-logo">
+          <!-- Larger logo display -->
+          <img src="lokey-logo.png" alt="LOKEY Password Vault logo" />
+        </div>
+      </div>
+    </section>
+
+    <main>
+      <section class="card">
+        <h2>Why LOKEY</h2>
+        <h3>Designed for people who don't want their passwords in the cloud.</h3>
+        <p class="card-sub">
+          LOKEY is intentionally minimal. No sign-ups, no sync servers, no telemetry – 
+          just a fast, focused place to keep the sensitive details you can’t afford to lose.
+        </p>
+        <ul class="feature-list">
+          <li>
+            <span class="feature-dot"></span>
+            <span><strong>Biometric lock.</strong> Unlock your vault with Face ID or Touch ID. Authentication is handled entirely by Apple’s Secure Enclave.</span>
+          </li>
+          <li>
+            <span class="feature-dot"></span>
+            <span><strong>On-device keychain storage.</strong> Credentials are stored using Apple Keychain APIs – encrypted and sandboxed on your device.</span>
+          </li>
+          <li>
+            <span class="feature-dot"></span>
+            <span><strong>Smart categories.</strong> Group logins by Social, Finance, Work or your own custom categories and filter them in a single tap.</span>
+          </li>
+          <li>
+            <span class="feature-dot"></span>
+            <span><strong>Secure clipboard.</strong> Copy usernames and passwords with a tap; LOKEY keeps clipboard usage intentional and lightweight.</span>
+          </li>
+          <li>
+            <span class="feature-dot"></span>
+            <span><strong>Dark-mode ready.</strong> A clean, monochrome interface that looks at home on modern iPhones in both light and dark themes.</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Support &amp; privacy</h2>
+        <p class="card-sub">
+          LOKEY is built as a privacy-respecting utility. We don't run servers, collect analytics, or sell data.
+          If something doesn’t feel right, reach out – you’ll speak directly with the developer.
+        </p>
+
+        <div class="support-row">
+          <div>
+            <div class="support-label">Support email</div>
+            <div class="support-value">
+              <a href="mailto:devindesilva07@gmail.com">devindesilva07@gmail.com</a>
+            </div>
+          </div>
+          <div>
+            <div class="support-label">Privacy policy</div>
+            <div class="support-value">
+              <a href="privacy.html">View LOKEY privacy policy</a>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:18px;">
+          <div class="support-label">Quick FAQ</div>
+          <div class="faq-item">
+            <div class="faq-q">Do you ever see my passwords?</div>
+            <div class="faq-a">No. All credentials are stored locally on your iPhone using Apple Keychain. They never leave your device.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Does LOKEY require an account?</div>
+            <div class="faq-a">No accounts, logins, or subscriptions are required. Install the app, set it up with biometrics, and start adding entries.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">How do I delete my data?</div>
+            <div class="faq-a">Because everything is stored on-device, deleting the app from your iPhone will remove all saved credentials.</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>&copy; 2025 LOKEY Password Vault. All rights reserved.</span>
+      <span>Made with a security-first mindset for everyday users.</span>
+    </footer>
+  </div>
+</body>
+</html>
