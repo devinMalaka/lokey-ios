@@ -13,6 +13,10 @@ struct Credential: Identifiable, Codable, Equatable {
     var username: String
     var password: String
     var notes: String? = nil
+    
+    //if the credential is categorized, or nil for "Uncategorized"
+    var categoryId: UUID? = nil
+    
     var createdAt: Date = .now
     var updatedAt: Date = .now
 }

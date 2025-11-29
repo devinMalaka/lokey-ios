@@ -31,14 +31,15 @@ struct LockedView: View {
     
     var body: some View {
         VStack(spacing: 25) {
-            Image(systemName: "lock.shield.fill")
-                .font(.system(size: 72))
-                .symbolRenderingMode(.hierarchical)
+            // App logo from Assets.xcassets
+            Image("LokeyLogo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 350, height: 350)
+//                        .cornerRadius(32)
+//                        .shadow(radius: 8)
             
-            Text("LOKEY")
-                .font(.largeTitle).bold()
-            
-            Text("Yor secrets, safely stored")
+            Text("Designed for Privacy. Built for You.")
                 .foregroundStyle(.secondary)
             
             Button {

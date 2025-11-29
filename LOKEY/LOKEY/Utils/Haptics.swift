@@ -9,13 +9,17 @@ import SwiftUI
 import UIKit
 
 enum Haptics {
+    private static var isEnabled: Bool {
+        UserDefaults.standard.bool(forKey: UserDefaultsKey.enableHaptics)
+    }
+    
     static func impact(_ style: UIImpactFeedbackGenerator.FeedbackStyle = .light) {
-            guard UserDefaults.standard.bool(forKey: UserDefaultsKey.enableHaptics) else { return }
-            UIImpactFeedbackGenerator(style: style).impactOccurred()
+        guard isEnabled else { return }
+        UIImpactFeedbackGenerator(style: style).impactOccurred()
     }
     
     static func notification(_ type: UINotificationFeedbackGenerator.FeedbackType) {
-        guard UserDefaults.standard.bool(forKey: UserDefaultsKey.enableHaptics) else { return }
+        guard isEnabled else {return}
         UINotificationFeedbackGenerator().notificationOccurred(type)
     }
 }

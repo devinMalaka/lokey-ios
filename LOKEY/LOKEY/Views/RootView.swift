@@ -10,6 +10,7 @@ import SwiftUI
 struct RootView: View {
     
     @Binding var isLocked: Bool
+    @Binding var showSettings: Bool
     
     @AppStorage(UserDefaultsKey.requireBiometricsOnLaunch)
     private var requireBiometricsOnLaunch: Bool = true
@@ -19,7 +20,8 @@ struct RootView: View {
             if isLocked && requireBiometricsOnLaunch {
                 LockedView(onUnlock: { isLocked = false })
             } else {
-                VaultListView(onLock: {
+                VaultListView(
+                    onLock: {
                     // If biometrics are disabled, lockingjust shows vault again
                     if requireBiometricsOnLaunch {
                         isLocked = true
@@ -27,16 +29,20 @@ struct RootView: View {
                         isLocked = false
                     }
                     
-                })
+                },
+                    onOpenSettings: {
+                        showSettings = true
+                    }
+                )
             }
         }
     }
 }
 
-#Preview("Locked") {
-    RootView(isLocked: .constant(true))
-}
-
-#Preview("Unlocked") {
-    RootView(isLocked: .constant(false))
-}
+//#Preview("Locked") {
+//    RootView(isLocked: .constant(true))
+//}
+//
+//#Preview("Unlocked") {
+//    RootView(isLocked: .constant(false))
+//}

@@ -14,49 +14,62 @@ struct SettingsView: View {
     @AppStorage(UserDefaultsKey.enableHaptics)
     private var enableHaptics = true
     
-    @Environment(\.dismiss) private var dismiss
+    @AppStorage(UserDefaultsKey.appTheme)
+    private var appThemeRaw: String = AppTheme.light.rawValue
+    
+    private var appTheme: AppTheme {
+        get { AppTheme(rawValue: appThemeRaw) ?? .light }
+        set { appThemeRaw = newValue.rawValue }
+    }
+    
+    // Binding that reads/writes the @AppStorage-backed raw value without mutating self
+    private var appThemeBinding: Binding<AppTheme> {
+        Binding(
+            get: { AppTheme(rawValue: appThemeRaw) ?? .light },
+            set: { appThemeRaw = $0.rawValue }
+        )
+    }
     
     var body: some View {
-        NavigationStack {
-            Form {
-                Section("Security") {
-                    Toggle("Require biometrics on launch", isOn: $requireBiometricsOnLaunch)
-                        .accessibilityHint("When off, the vault opens without FaceID or Touch ID")
-                }
-                
-                Section("Feedback") {
-                    Toggle("Enable haptics", isOn: $enableHaptics)
-                        .accessibilityHint("Vibration feedback on actions like unlock and copy")
-                }
-                
-                Section("About") {
-                    HStack {
-                        Text("App")
-                        Spacer()
-                        Text("LOKEY").foregroundStyle(.secondary)
-                    }
-                    
-                    HStack {
-                        Text("Version")
-                        Spacer()
-                        Text("0.1.0").foregroundStyle(.secondary)
-                    }
-                    
-                    HStack {
-                        Text("Developer")
-                        Spacer()
-                        Text("Devin De Silva").foregroundStyle(.secondary)
+        Form {
+            Section("Security") {
+                Toggle("Require biometrics on launch", isOn: $requireBiometricsOnLaunch)
+                    .accessibilityHint("When off, the vault opens without FaceID or Touch ID")
+            }
+            
+            Section("Feedback") {
+                Toggle("Enable haptics", isOn: $enableHaptics)
+                    .accessibilityHint("Vibration feedback on actions like unlock and copy")
+            }
+            
+            Section("Appearance") {
+                Picker("Theme", selection: appThemeBinding) {
+                    ForEach(AppTheme.allCases) { theme in
+                        Text(theme.displayName).tag(theme)
                     }
                 }
             }
-            .navigationTitle("Settings")
-            .toolbar{
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Close") { dismiss() }
+            
+            Section("About") {
+                HStack {
+                    Text("App")
+                    Spacer()
+                    Text("LOKEY").foregroundStyle(.secondary)
+                }
+                
+                HStack {
+                    Text("Version")
+                    Spacer()
+                    Text("0.1.0").foregroundStyle(.secondary)
+                }
+                
+                HStack {
+                    Text("Developer")
+                    Spacer()
+                    Text("Devin De Silva").foregroundStyle(.secondary)
                 }
             }
         }
-        
     }
     
 }

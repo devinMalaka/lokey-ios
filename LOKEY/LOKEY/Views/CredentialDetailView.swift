@@ -12,6 +12,7 @@ import UIKit
 struct CredentialDetailView: View {
     // local copy of the credential, so that the view can update after editing
     @State private var credential: Credential
+    let categories: [Category]
     
     // Called when user saves changes from the edit credential sheet
     let onUpdate:  (Credential) -> Void
@@ -28,10 +29,12 @@ struct CredentialDetailView: View {
     // Custom init to seed the @State
     init(
         credential: Credential,
+        categories: [Category],
         onUpdate: @escaping (Credential) -> Void,
         onDelete: @escaping () -> Void
     ) {
         _credential = State(initialValue: credential)
+        self.categories = categories
         self.onUpdate = onUpdate
         self.onDelete = onDelete
     }
@@ -47,6 +50,16 @@ struct CredentialDetailView: View {
                     Text(credential.title)
                         .foregroundStyle(.secondary)
                 }
+                
+                HStack {
+                    Text("Category")
+                    Spacer()
+                    Text(categoryLabel)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                        .truncationMode(.tail )
+                }
+
                 
                 HStack {
                     Text("Username")
@@ -146,7 +159,7 @@ struct CredentialDetailView: View {
         // Edit flow
         .sheet(isPresented: $isEditing) {
             NavigationStack {
-                AddEditCredentialView(mode: .edit(credential)) { updated in
+                AddEditCredentialView(mode: .edit(credential), categories: categories) { updated in
                     credential = updated
                     onUpdate(updated)
                 }
@@ -164,20 +177,29 @@ struct CredentialDetailView: View {
             Text("This action cannot be undone.")
         }
     }
-}
-
-#Preview {
-    let sample = Credential(
-        title: "Gmail",
-        username: "devindemalaka@gmail.com",
-        password: "testPassword",
-        notes: "personal email credentials"
-    )
-    NavigationStack {
-        CredentialDetailView(
-            credential: sample,
-            onUpdate: { _ in },
-            onDelete: {}
-        )
+    
+    private var categoryLabel: String {
+        if let id = credential.categoryId,
+           let category = categories.first(where: { $0.id == id }) {
+            return category.name
+        } else {
+            return "Uncategorized"
+        }
     }
 }
+
+//#Preview {
+//    let sample = Credential(
+//        title: "Gmail",
+//        username: "devindemalaka@gmail.com",
+//        password: "testPassword",
+//        notes: "personal email credentials"
+//    )
+//    NavigationStack {
+//        CredentialDetailView(
+//            credential: sample,
+//            onUpdate: { _ in },
+//            onDelete: {}
+//        )
+//    }
+//}

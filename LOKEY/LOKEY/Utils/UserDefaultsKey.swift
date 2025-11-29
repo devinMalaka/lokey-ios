@@ -10,4 +10,5 @@ import Foundation
 enum UserDefaultsKey {
     static let requireBiometricsOnLaunch = "lokey_require_biometrics_on_launch"
     static let enableHaptics = "lokey_enable_haptics"
+    static let appTheme = "lokey_app_theme"
 }

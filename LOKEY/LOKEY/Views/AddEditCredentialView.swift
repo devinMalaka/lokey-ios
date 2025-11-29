@@ -11,6 +11,7 @@ struct AddEditCredentialView: View {
     enum Mode { case add, edit(Credential) }
     
     let mode: Mode
+    var categories: [Category]
     var onSave: (Credential) -> Void
     @Environment(\.dismiss) private var dismiss
     
@@ -19,16 +20,29 @@ struct AddEditCredentialView: View {
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var notes: String = ""
+    @State private var selectedCategoryId: UUID?
+    @State private var showValidationError: Bool = false
     
-    init(mode: Mode, onSave: @escaping (Credential) -> Void) {
+    init(mode: Mode, categories: [Category], onSave: @escaping (Credential) -> Void) {
         self.mode = mode
+        self.categories = categories
         self.onSave = onSave
-        if case let .edit(c) = mode {
-            _title = State(initialValue: c.title)
-            _username = State(initialValue: c.username)
-            _password = State(initialValue: c.password)
-            _notes = State(initialValue: c.notes ?? "")
+        
+        switch mode {
+        case .add:
+            _title = State(initialValue: "")
+            _username = State(initialValue: "")
+            _password = State(initialValue: "")
+            _notes = State(initialValue: "")
+            _selectedCategoryId = State(initialValue: nil)
+        case .edit(let credential):
+            _title = State(initialValue: credential.title)
+            _username = State(initialValue: credential.username)
+            _password = State(initialValue: credential.password)
+            _notes = State(initialValue: credential.notes ?? "")
+            _selectedCategoryId = State(initialValue: credential.categoryId)
         }
+        
     }
     
     var body: some View {
@@ -42,10 +56,21 @@ struct AddEditCredentialView: View {
                 TextField("Password", text: $password)
                     .textContentType(.password)
             }
+            Section("Category") {
+                Picker("Category", selection: $selectedCategoryId) {
+                    Text("None").tag(UUID?.none)
+                    
+                    ForEach(categories) { category in
+                        Text(category.name)
+                            .tag(Optional(category.id))
+                    }
+                }
+            }
             Section("Notes") {
                 TextField("Optional notes", text: $notes, axis: .vertical)
                     .lineLimit(3, reservesSpace: true)
             }
+            
         }
         .navigationTitle(modeTitle)
         .toolbar{
@@ -53,7 +78,7 @@ struct AddEditCredentialView: View {
                 Button("Cancel") { dismiss() }
             }
             ToolbarItem(placement: .confirmationAction) {
-                Button("Save", action: save)
+                Button("Save") { save() }
                     .disabled(!isValid)
             }
         }
@@ -70,11 +95,16 @@ struct AddEditCredentialView: View {
     }
     
     private func save() {
+        let trimmedTitle = title.trimmingCharacters(in: .whitespaces)
+        let trimmedUserName = username.trimmingCharacters(in: .whitespaces)
+        let trimmedNotes = notes.trimmingCharacters(in: .whitespacesAndNewlines)
+        
         let base = Credential(
-            title: title.trimmingCharacters(in: .whitespaces),
-            username: username.trimmingCharacters(in: .whitespaces),
+            title: trimmedTitle,
+            username: trimmedUserName,
             password: password,
-            notes: notes.isEmpty ? nil : notes
+            notes: trimmedNotes.isEmpty ? nil : trimmedNotes,
+            categoryId: selectedCategoryId
         )
         
         switch mode {
@@ -86,6 +116,7 @@ struct AddEditCredentialView: View {
             updated.createdAt = existing.createdAt
             onSave(updated)
         }
+        Haptics.notification(.success)
         dismiss()
     }
 }
@@ -119,5 +150,5 @@ struct AddEditCredentialView: View {
 //        }
 //        .padding()
 //    }
-    AddEditCredentialView(mode: .add) { _ in }
+//    AddEditCredentialView(mode: .add) { _ in }
 }
